@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 const KEY = process.env.REACT_APP_OAUTH_CLIENT_ID;
 
+// responsible for changing the state of the app (this approach is easier to follow for auth flow)
+// not best practice to have component manage state, action creators should manage it
 class GoogleAuth extends Component {
   state = { isSignedIn: null };
 
