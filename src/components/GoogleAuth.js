@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { signIn, signOut } from '../actions';
 
 const KEY = process.env.REACT_APP_OAUTH_CLIENT_ID;
 
 // responsible for changing the state of the app (this approach is easier to follow for auth flow)
 // not best practice to have component manage state, action creators should manage it
 class GoogleAuth extends Component {
-  state = { isSignedIn: null };
-
   componentDidMount() {
     window.gapi.load('client:auth2', () => {
       window.gapi.client
@@ -16,18 +16,23 @@ class GoogleAuth extends Component {
         })
         .then(() => {
           // after loading a library after initializing it, get reference to the auth library
-          // and the auth object and then update component level state with new property
-          // called isSignedIn
+          // and assign it to this.auth
           this.auth = window.gapi.auth2.getAuthInstance();
-          this.setState({ isSignedIn: this.auth.isSignedIn.get() });
+          // then update auth state inside of redux store
+          this.onAuthChange(this.auth.isSignedIn.get());
+          // wait for authentication status to change in the future
           this.auth.isSignedIn.listen(this.onAuthChange); // invoked anytime users auth changes
         });
     });
   }
 
   // called anytime the users auth status changes
-  onAuthChange = () => {
-    this.setState({ isSignedIn: this.auth.isSignedIn.get() });
+  onAuthChange = (isSignedIn) => {
+    if (isSignedIn) {
+      this.props.signIn();
+    } else {
+      this.props.signOut();
+    }
   };
 
   onSignInClick = () => {
@@ -39,9 +44,9 @@ class GoogleAuth extends Component {
   };
 
   renderAuthButton() {
-    if (this.state.isSignedIn === null) {
+    if (this.props.isSignedIn === null) {
       return null;
-    } else if (this.state.isSignedIn) {
+    } else if (this.props.isSignedIn) {
       return (
         <button className="ui red google button" onClick={this.onSignOutClick}>
           <i className="google icon" />
@@ -63,4 +68,9 @@ class GoogleAuth extends Component {
   }
 }
 
-export default GoogleAuth;
+const mapStateToProps = (state) => {
+  return { isSignedIn: state.auth.isSignedIn };
+}
+
+// redux connect -> connect(state, actions)
+export default connect(mapStateToProps, { signIn, signOut })(GoogleAuth);
