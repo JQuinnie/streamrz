@@ -16,3 +16,9 @@ Stream it like Twitch. A streaming video app.
 ### Redux Forms
 
 Redux Form is a collection of reducer creators and action creators that make implmenting even the most complex and custom forms with React and Redux simple and performant. It includes a reducer, mapStateToProps, action creators with component props and handlers.
+
+### Backend REST API
+
+- [REST API](https://github.com/typicode/json-server)
+
+In `server/db.json`, the file is server as a database.
