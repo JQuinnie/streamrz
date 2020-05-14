@@ -25,8 +25,10 @@ export const signOut = () => {
 };
 
 // handle axios creation
-export const createStream = (formValues) => async (dispatch) => {
-  const response = await streams.post('/streams', formValues);
+// getState function allows us to pull out data from Redux Store
+export const createStream = (formValues) => async (dispatch, getState) => {
+  const { userId } = getState().auth;
+  const response = await streams.post('/streams', { ...formValues, userId });
 
   // dispatching actionos after stream creation
   dispatch({ type: CREATE_STREAM, payload: response.data });
