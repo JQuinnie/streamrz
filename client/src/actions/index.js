@@ -33,7 +33,7 @@ export const createStream = (formValues) => async (dispatch) => {
 };
 
 // arrow function that returrns a Thunk function
-export const fetchStreams = async (dispatch) => {
+export const fetchStreams = () => async (dispatch) => {
   const response = await streams.get('/streams');
 
   dispatch({ type: FETCH_STREAMS, payload: response.data });
