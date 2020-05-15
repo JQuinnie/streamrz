@@ -62,3 +62,13 @@ const streamReducer = (state={}, action) => c
   }
 };
 ```
+
+## Note on BrowserRouter and History
+
+The BrowserRouter creates the history object which keeps track of the address in eh address bar of the browser. When the adderss changes the history object is going to communicate the change over to the browser router. The History object not only watches teh address bar but it also has the ability to change the address bar. Browser router makes the history object available as a prop passed down to the components in it, the component could easily trigger navigation inside of it.
+
+It is not super easy to do programmatic navigation on an Action Creator. It is challenging to write code that can get a handle or a reference to the history object.
+
+One solution could be to pass along the history object into the action creator (action creator to receive not only the formValues but also some history object). But this will require that the action creators are to be called with a history object and also make sure that all of the components call the action creator with the history object as well.
+
+A better solution is for us to create a history object inside of a dedicated file, anytime we want to get access to that history object, we can just import that file. We are taking over maintaining control of the history object from the browser router. The BrowserRouter becomes a plain generic router and create the history object ourselves.
