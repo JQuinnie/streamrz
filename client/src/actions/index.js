@@ -1,3 +1,7 @@
+// axios instance to make requests over to API
+import streams from '../apis/streams';
+import history from '../history';
+
 // action creators
 import {
   SIGN_IN,
@@ -8,8 +12,6 @@ import {
   DELETE_STREAM,
   EDIT_STREAM,
 } from './types';
-// axios instance to make requests over to API
-import streams from '../apis/streams';
 
 export const signIn = (userId) => {
   return {
@@ -32,6 +34,9 @@ export const createStream = (formValues) => async (dispatch, getState) => {
 
   // dispatching actionos after stream creation
   dispatch({ type: CREATE_STREAM, payload: response.data });
+
+  // Programmatic navigation to get user back to the root route after successful response
+  history.push('/');
 };
 
 // arrow function that returrns a Thunk function
