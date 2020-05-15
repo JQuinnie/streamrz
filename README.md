@@ -72,3 +72,7 @@ It is not super easy to do programmatic navigation on an Action Creator. It is c
 One solution could be to pass along the history object into the action creator (action creator to receive not only the formValues but also some history object). But this will require that the action creators are to be called with a history object and also make sure that all of the components call the action creator with the history object as well.
 
 A better solution is for us to create a history object inside of a dedicated file, anytime we want to get access to that history object, we can just import that file. We are taking over maintaining control of the history object from the browser router. The BrowserRouter becomes a plain generic router and create the history object ourselves.
+
+### React-Router Guideline
+
+With React-Router, each component needs to be designed to work in isolation (fetch its own data) for page reload and Redux state access to work, no dependencies for others to fetch data. (A direct navigation to /streams/edit/:id)
