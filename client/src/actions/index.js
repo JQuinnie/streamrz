@@ -60,7 +60,10 @@ export const deleteStream = (id) => async (dispatch) => {
 };
 
 export const editStream = (id, formValues) => async (dispatch) => {
-  const response = await streams.put(`/streams/${id}`, formValues);
+  // PUT requests will overwrite upon updates, replace ALL properties with what was supplied to PUT
+  // PATCH requests will update ONLY the properties that was supplied to PATCH
+  const response = await streams.patch(`/streams/${id}`, formValues);
 
   dispatch({ type: EDIT_STREAM, payload: response.data });
+  history.push('/');
 };
